@@ -1,9 +1,10 @@
 diff a/test/token/ERC721/extensions/ERC721Consecutive.test.js b/test/token/ERC721/extensions/ERC721Consecutive.test.js	(rejected hunks)
-@@ -18,7 +18,6 @@
-     { receiver: user3, amount: 0 },
+@@ -19,7 +19,7 @@
      { receiver: user1, amount: 7 },
    ];
--  const delegates = [user1, user3];
  
-   describe.only('with valid batches', function () {
+-  describe('with valid batches', function () {
++  describe('with valid batches', function () {
      beforeEach(async function () {
+       this.token = await ERC721ConsecutiveMock.new(
+         name,
