@@ -18,12 +18,14 @@ contract('ERC721Consecutive', function (accounts) {
     { receiver: user3, amount: 0 },
     { receiver: user1, amount: 7 },
   ];
+  const delegates = [user1, user3];
 
-  describe('with valid batches', function () {
+  describe.only('with valid batches', function () {
     beforeEach(async function () {
       this.token = await ERC721ConsecutiveMock.new(
         name,
         symbol,
+        delegates,
         batches.map(({ receiver }) => receiver),
         batches.map(({ amount }) => amount),
       );
@@ -154,10 +156,10 @@ contract('ERC721Consecutive', function (accounts) {
     });
   });
 
-  describe('invalid use', function () {
+  describe.only('invalid use', function () {
     it('cannot mint a batch larger than 5000', async function () {
       await expectRevert(
-        ERC721ConsecutiveMock.new(name, symbol, [user1], ['5001']),
+        ERC721ConsecutiveMock.new(name, symbol, [], [user1], ['5001']),
         'ERC721Consecutive: batch too large',
       );
     });

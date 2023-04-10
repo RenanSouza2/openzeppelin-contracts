@@ -130,4 +130,9 @@ abstract contract ERC721Consecutive is IERC2309, ERC721 {
             _sequentialBurn.set(tokenId);
         }
     }
+
+    function _increaseBalance(address to, uint256 batchSize) internal virtual override {
+        require(batchSize <= _maxBatchSize(), "ERC721Consecutive: batch too large");
+        super._increaseBalance(to, batchSize);
+    }
 }
