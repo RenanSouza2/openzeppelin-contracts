@@ -1,35 +1,45 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
+const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 const { balance, ether, expectEvent, expectRevert, send } = require('@openzeppelin/test-helpers');
 const { expectRevertCustomError } = require('../helpers/customError');
 
-const Create2 = artifacts.require('$Create2');
-const VestingWallet = artifacts.require('VestingWallet');
+const Create2 = '$Create2';
+const VestingWallet = 'VestingWallet';
 // This should be a contract that:
 // - has no constructor arguments
 // - has no immutable variable populated during construction
 const ConstructorLessContract = Create2;
 
-contract('Create2', function (accounts) {
-  const [deployerAccount, other] = accounts;
+async function fixture() {
+  const [deployerAccount, other] = await ethers.getSigners();
 
+  const factory = await ethers.deployContract(Create2);
+  const encodedParams = ethers.AbiCoder.defaultAbiCoder()
+    .encode(['address', 'uint64', 'uint64'], [other.address, 0, 0])
+    .slice(2);
+
+  const VestingWalletFactory = await ethers.getContractFactory(VestingWallet);
+  const constructorByteCode = `${VestingWalletFactory.bytecode}${encodedParams}`;
+
+  return { deployerAccount, other, factory, encodedParams, constructorByteCode };
+}
+
+describe.only('Create2', function () {
   const salt = 'salt message';
-  const saltHex = web3.utils.soliditySha3(salt);
-
-  const encodedParams = web3.eth.abi.encodeParameters(['address', 'uint64', 'uint64'], [other, 0, 0]).slice(2);
-
-  const constructorByteCode = `${VestingWallet.bytecode}${encodedParams}`;
+  const saltHex = ethers.id(salt);
 
   beforeEach(async function () {
-    this.factory = await Create2.new();
+    Object.assign(this, await loadFixture(fixture));
   });
+
   describe('computeAddress', function () {
-    it('computes the correct contract address', async function () {
-      const onChainComputed = await this.factory.$computeAddress(saltHex, web3.utils.keccak256(constructorByteCode));
+    it.only('computes the correct contract address', async function () {
+      const onChainComputed = await this.factory.$computeAddress(saltHex, ethers.keccak256(this.constructorByteCode));
       const offChainComputed = ethers.getCreate2Address(
-        this.factory.address,
+        this.factory.target,
         saltHex,
-        ethers.keccak256(constructorByteCode),
+        ethers.keccak256(this.constructorByteCode),
       );
       expect(onChainComputed).to.equal(offChainComputed);
     });
