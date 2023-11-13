@@ -11,7 +11,7 @@ async function fixture() {
 
   const pausable = await ethers.deployContract(PausableMock);
 
-  return { pauser, pausable };
+  return { pauser, pausable }
 }
 
 describe('Pausable', function () {
