@@ -24,7 +24,7 @@ async function fixture() {
   return { deployerAccount, other, factory, encodedParams, constructorByteCode, constructorLessBytecode };
 }
 
-describe.only('Create2', function () {
+describe('Create2', function () {
   const salt = 'salt message';
   const saltHex = ethers.id(salt);
 
