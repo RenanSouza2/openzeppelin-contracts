@@ -10,7 +10,7 @@ async function fixture() {
   return { sender, other, nonces };
 }
 
-describe('Nonces', function () {
+describe.only('Nonces', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
   });
@@ -23,8 +23,7 @@ describe('Nonces', function () {
     it('increments a nonce', async function () {
       expect(await this.nonces.nonces(this.sender)).to.be.equal(0n);
 
-      const tx = await this.nonces.$_useNonce(this.sender);
-      await expect(tx).to.emit(this.nonces, 'return$_useNonce').withArgs(0n);
+      await expect(await this.nonces.$_useNonce(this.sender)).to.emit(this.nonces, 'return$_useNonce').withArgs(0n);
 
       expect(await this.nonces.nonces(this.sender)).to.be.equal(1n);
     });
