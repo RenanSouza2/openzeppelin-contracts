@@ -1,14 +1,12 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
-
-const ERC20MulticallMock = '$ERC20MulticallMock';
-
+ 
 async function fixture() {
   const [deployer, alice, bob] = await ethers.getSigners();
 
   const amount = 12000;
-  const multicallToken = await ethers.deployContract(ERC20MulticallMock, ['name', 'symbol']);
+  const multicallToken = await ethers.deployContract('$ERC20MulticallMock', ['name', 'symbol']);
   await multicallToken.$_mint(deployer, amount);
 
   return { deployer, alice, bob, amount, multicallToken };
@@ -20,8 +18,8 @@ describe('Multicall', function () {
   });
 
   it('batches function calls', async function () {
-    expect(await this.multicallToken.balanceOf(this.alice)).to.be.equal('0');
-    expect(await this.multicallToken.balanceOf(this.bob)).to.be.equal('0');
+    expect(await this.multicallToken.balanceOf(this.alice)).to.be.equal(0n);
+    expect(await this.multicallToken.balanceOf(this.bob)).to.be.equal(0n);
 
     await this.multicallToken.multicall([
       this.multicallToken.interface.encodeFunctionData('transfer', [this.alice.address, this.amount / 2]),
@@ -45,7 +43,7 @@ describe('Multicall', function () {
   });
 
   it('reverts previous calls', async function () {
-    expect(await this.multicallToken.balanceOf(this.alice)).to.be.equal('0');
+    expect(await this.multicallToken.balanceOf(this.alice)).to.be.equal(0n);
 
     const call = this.multicallToken.multicall([
       this.multicallToken.interface.encodeFunctionData('transfer', [this.alice.address, this.amount]),
@@ -55,7 +53,7 @@ describe('Multicall', function () {
     await expect(call)
       .to.be.revertedWithCustomError(this.multicallToken, 'ERC20InsufficientBalance')
       .withArgs(this.deployer.address, 0, this.amount);
-    expect(await this.multicallToken.balanceOf(this.alice)).to.be.equal('0');
+    expect(await this.multicallToken.balanceOf(this.alice)).to.be.equal(0n);
   });
 
   it('bubbles up revert reasons', async function () {
