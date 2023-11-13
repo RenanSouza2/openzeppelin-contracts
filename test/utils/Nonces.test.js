@@ -23,7 +23,9 @@ describe('Nonces', function () {
     it('increments a nonce', async function () {
       expect(await this.nonces.nonces(this.sender)).to.be.equal(0n);
 
-      await expect(await this.nonces.$_useNonce(this.sender)).to.emit(this.nonces, 'return$_useNonce').withArgs(0n);
+      await expect(await this.nonces.$_useNonce(this.sender))
+        .to.emit(this.nonces, 'return$_useNonce')
+        .withArgs(0n);
 
       expect(await this.nonces.nonces(this.sender)).to.be.equal(1n);
     });
