@@ -12,7 +12,7 @@ async function fixture() {
   return { reentrancyMock };
 }
 
-describe.only('ReentrancyGuard', function () {
+describe('ReentrancyGuard', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
   });
