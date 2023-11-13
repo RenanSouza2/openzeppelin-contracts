@@ -10,7 +10,7 @@ async function fixture() {
   return { sender, other, nonces };
 }
 
-describe.only('Nonces', function () {
+describe('Nonces', function () {
   beforeEach(async function () {
     Object.assign(this, await loadFixture(fixture));
   });
