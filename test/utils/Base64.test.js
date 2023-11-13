@@ -2,10 +2,8 @@ const { ethers } = require('hardhat');
 const { expect } = require('chai');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
-const Base64 = '$Base64';
-
 async function fixture() {
-  const base64 = await ethers.deployContract(Base64);
+  const base64 = await ethers.deployContract('$Base64');
   return { base64 };
 }
 
