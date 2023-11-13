@@ -7,8 +7,6 @@ const AddressArraysMock = 'AddressArraysMock';
 const Bytes32ArraysMock = 'Bytes32ArraysMock';
 const Uint256ArraysMock = 'Uint256ArraysMock';
 
-async function fixture () {}
-
 describe('Arrays', function () {
   describe('findUpperBound', function () {
     describe('Even number of elements', function () {
@@ -17,7 +15,7 @@ describe('Arrays', function () {
       const fixture = async () => {
         const arrays = await ethers.deployContract(Uint256ArraysMock, [EVEN_ELEMENTS_ARRAY]);
         return { arrays };
-      }
+      };
 
       beforeEach(async function () {
         Object.assign(this, await loadFixture(fixture));
@@ -50,7 +48,7 @@ describe('Arrays', function () {
       const fixture = async () => {
         const arrays = await ethers.deployContract(Uint256ArraysMock, [ODD_ELEMENTS_ARRAY]);
         return { arrays };
-      }
+      };
 
       beforeEach(async function () {
         Object.assign(this, await loadFixture(fixture));
@@ -83,7 +81,7 @@ describe('Arrays', function () {
       const fixture = async () => {
         const arrays = await ethers.deployContract(Uint256ArraysMock, [WITH_GAP_ARRAY]);
         return { arrays };
-      }
+      };
 
       beforeEach(async function () {
         Object.assign(this, await loadFixture(fixture));
@@ -112,7 +110,7 @@ describe('Arrays', function () {
         artifact: AddressArraysMock,
         elements: Array(10)
           .fill()
-          .map(() => randomHex(20))
+          .map(() => randomHex(20)),
       },
       {
         type: 'bytes32',
@@ -134,8 +132,8 @@ describe('Arrays', function () {
 
         for (const i in elements) {
           expect(await contract.unsafeAccess(i)).to.be.equal(
-            type == 'address' ? ethers.getAddress(elements[i]) : elements[i]
-          )
+            type == 'address' ? ethers.getAddress(elements[i]) : elements[i],
+          );
         }
       });
     }
