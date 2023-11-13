@@ -12,7 +12,7 @@ async function fixture() {
 
   const VestingWalletFactory = await ethers.getContractFactory('VestingWallet');
   const constructorByteCode = `${VestingWalletFactory.bytecode}${encodedParams}`;
-  
+
   // This should be a contract that:
   // - has no constructor arguments
   // - has no immutable variable populated during construction

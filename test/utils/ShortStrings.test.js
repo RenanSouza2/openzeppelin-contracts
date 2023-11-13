@@ -7,7 +7,7 @@ function length(sstr) {
 }
 
 function decode(sstr) {
-  return ethers.toUtf8String(sstr).slice(0, length(sstr))
+  return ethers.toUtf8String(sstr).slice(0, length(sstr));
 }
 
 async function fixture() {

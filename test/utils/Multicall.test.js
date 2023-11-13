@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
- 
+
 async function fixture() {
   const [deployer, alice, bob] = await ethers.getSigners();
 
