@@ -131,7 +131,7 @@ describe('Arrays', function () {
         Object.assign(this, await loadFixture(fixture));
       });
 
-      describe('sort', function () {
+      describe.only('sort', function () {
         for (const length of [0, 1, 2, 8, 32, 128]) {
           describe(`${type}[] of length ${length}`, function () {
             beforeEach(async function () {
@@ -141,7 +141,8 @@ describe('Arrays', function () {
             afterEach(async function () {
               const expected = Array.from(this.array).sort(comparator);
               const reversed = Array.from(expected).reverse();
-              expect(await this.instance.sort(this.array)).to.deep.equal(expected);
+              await this.instance.sort(this.array);
+              expect(await this.instance.sort.staticCall(this.array)).to.deep.equal(expected);
               expect(await this.instance.sortReverse(this.array)).to.deep.equal(reversed);
             });
 

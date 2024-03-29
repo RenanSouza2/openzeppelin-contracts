@@ -37,7 +37,9 @@ contract Uint256ArraysMock {
         return _array.unsafeAccess(pos).value;
     }
 
-    function sort(uint256[] memory array) external pure returns (uint256[] memory) {
+    event aaa();
+    function sort(uint256[] memory array) external returns (uint256[] memory) {
+        emit aaa();
         return array.sort();
     }
 
@@ -71,7 +73,9 @@ contract AddressArraysMock {
         return _array.unsafeAccess(pos).value;
     }
 
-    function sort(address[] memory array) external pure returns (address[] memory) {
+    event aaa();
+    function sort(address[] memory array) external returns (address[] memory) {
+        emit aaa();
         return array.sort();
     }
 
@@ -105,7 +109,9 @@ contract Bytes32ArraysMock {
         return _array.unsafeAccess(pos).value;
     }
 
-    function sort(bytes32[] memory array) external pure returns (bytes32[] memory) {
+    event aaa();
+    function sort(bytes32[] memory array) external returns (bytes32[] memory) {
+        emit aaa();
         return array.sort();
     }
 
