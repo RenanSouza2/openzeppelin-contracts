@@ -64,7 +64,8 @@ function _mergeSort(
 ) private pure {
     if(end - begin < 0x40) return;
 
-    uint256 middle = Math.average(begin, end);
+    uint256 diff = (end - begin) >> 1 & ~uint256(31);
+    uint256 middle = begin + diff;
     _mergeSort(begin, middle, comp);
     _mergeSort(middle, end, comp);
 
@@ -129,7 +130,7 @@ function _merge(
     uint256 middle, 
     uint256 end,
     function(bytes32, bytes32) pure returns (bool) comp
-) internal pure {
+) private pure {
     uint256 ptr = uint256(_mload(0x40));
 
     uint256 i = begin;
