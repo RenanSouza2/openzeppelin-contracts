@@ -9,6 +9,8 @@ import {SlotDerivation} from "./SlotDerivation.sol";
 import {StorageSlot} from "./StorageSlot.sol";
 import {Math} from "./math/Math.sol";
 
+import "hardhat/console.sol";
+
 /**
  * @dev Collection of functions related to array types.
  */
@@ -63,10 +65,9 @@ function _mergeSort(
     function(bytes32, bytes32) pure returns (bool) comp
 ) private pure {
     unchecked {
-
         if(end - begin < 0x40) return;
         
-        uint256 diff = (end - begin) >> 1 & ~uint256(31);
+        uint256 diff = ((end - begin) >> 6) << 5;
         uint256 middle = begin + diff;
         _mergeSort(begin, middle, comp);
         _mergeSort(middle, end, comp);
@@ -145,12 +146,16 @@ function _merge(
         }
 
         uint256 ptr = uint256(_mload(0x40));
+
+        uint256 size_arr_1 = middle - begin;
+        _mcopy(begin, ptr, size_arr_1);
+        uint256 end_arr_1 = ptr + size_arr_1;
         
-        uint256 i = begin;
+        uint256 i = ptr;
         uint256 j = middle;
-        uint256 k = ptr;
+        uint256 k = begin;
         
-        for(; i < middle && j < end; k += 0x20) {
+        for(; i < end_arr_1 && j < end; k += 0x20) {
             bytes32 a = _mload(i);
             bytes32 b = _mload(j);
             
@@ -163,12 +168,10 @@ function _merge(
             }
         }
         
-        if(i < middle) {
-            uint256 size = middle - i;
-            _mcopy(i, end - size, size);
+        if(i < end_arr_1) {
+            uint256 size_remaining_arr_1 = end_arr_1 - i;
+            _mcopy(i, k, size_remaining_arr_1);
         }
-        
-        _mcopy(ptr, begin, k - ptr);
     }
 }
 `;

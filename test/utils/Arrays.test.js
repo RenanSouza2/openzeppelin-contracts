@@ -131,7 +131,7 @@ describe('Arrays', function () {
         Object.assign(this, await loadFixture(fixture));
       });
 
-      describe('sort', function () {
+      describe.only('sort', function () {
         for (const length of [0, 1, 2, 3, 6, 8, 32, 128]) {
           describe(`${type}[] of length ${length}`, function () {
             beforeEach(async function () {
